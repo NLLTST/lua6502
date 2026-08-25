@@ -1,5 +1,3 @@
---https://github.com/lxsmnsyc/lua6502/tree/master
-
 local bits = bit32 or require "bit32"
 local AND, OR, NOT, XOR = bits.band, bits.bor, bits.bnot, bits.bxor
 local lshift, rshift = bits.blshift, bits.brshift
@@ -206,7 +204,6 @@ local function run(n)
 
     while(start + n > cycles and not illegal) do
         opcode = read(immediate())
-        --print("execing",opcode)
         if exec(addressingTable[opcode], opcodeTable[opcode]) then
             return 1
         end
@@ -524,10 +521,6 @@ local function jam(src)
     ILLEGAL()
 end
 
-local function ent(src)
-    return true
-end
-
 local function dump()
     return {
         pc = pc,
@@ -585,7 +578,7 @@ opcodeTable = {
     --[[ Cx ]]    cpy,  cmp,  nop,  dcp,  cpy,  cmp,  dec,  dcp,  iny,  cmp,  dex,  nop,  cpy,  cmp,  dec,  dcp, --[[ Cx ]]
     --[[ Dx ]]    bne,  cmp,  jam,  dcp,  nop,  cmp,  dec,  dcp,  cld,  cmp,  nop,  dcp,  nop,  cmp,  dec,  dcp, --[[ Dx ]]
     --[[ Ex ]]    cpx,  sbc,  nop,  isb,  cpx,  sbc,  inc,  isb,  inx,  sbc,  nop,  sbc,  cpx,  sbc,  inc,  isb, --[[ Ex ]]
-    --[[ Fx ]]    beq,  sbc,  ent,  isb,  nop,  sbc,  inc,  isb,  sed,  sbc,  nop,  isb,  nop,  sbc,  inc,  isb  --[[ Fx ]]
+    --[[ Fx ]]    beq,  sbc,  jam,  isb,  nop,  sbc,  inc,  isb,  sed,  sbc,  nop,  isb,  nop,  sbc,  inc,  isb  --[[ Fx ]]
 }
 
 return function (r, w)
